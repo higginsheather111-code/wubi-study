@@ -290,11 +290,11 @@ const ProgressSync=(()=>{
 ;
 'use strict';
 let offlineNotice='',offlinePending=null;
-function accountLink(){return '<span class="offline-badge">GitHub 备用版</span>';}
+function accountLink(){return '<a class="offline-badge" href="https://wubi-study.higginsheather111.workers.dev" target="_top">GitHub 登录 · 云端同步 ↗</a>';}
 function recordNote(){return '进度和最近 100 次成绩保存在本机浏览器。换电脑、换浏览器或更换网址前，请先导出备份。';}
 function sessionPanel(){return '<div class="eyebrow">本机记录 · 离线可用</div><h3>最近的练习</h3>'+sessionHistory()+'<p class="muted">'+recordNote()+'</p>';}
 function footer(){return '<footer class="sources">五笔研习室 · 新世纪五笔 · GitHub 备用版<br>全部课程、题库和字根图已包含在此文件中。打开页面后，判题和查询在本机运行，无需 ChatGPT 登录或订阅。<br><a href="licenses.html" target="_blank">资料来源与许可</a> · 来源网站链接需要联网打开。<br>离线记录与线上账号记录各自独立；本站为个人非商业学习用途。</footer>';}
-function syncPanel(){return '<section class="sync-panel offline-panel" aria-label="离线学习与备份"><div class="sync-heading"><div><b>'+esc(ProgressSync.status())+'</b><small>打开后即可练习 · 无需 ChatGPT 订阅 · 记录仅保存在本机</small></div><div class="offline-actions"><button class="secondary" data-offline="export">导出备份</button><button class="text-button" data-offline="pick">导入备份</button><input type="file" id="offline-backup-file" accept=".json,application/json" hidden></div></div><p class="offline-note">'+esc(ProgressSync.issue||'请固定使用同一个浏览器和网站地址，并定期导出备份。清理浏览器数据可能清除本机记录。')+'</p><div id="offline-feedback" role="status" aria-live="polite">'+esc(offlineNotice)+'</div><div id="offline-import-preview"></div></section>';}
+function syncPanel(){return '<section class="sync-panel offline-panel" aria-label="离线学习与备份"><div class="sync-heading"><div><b>'+esc(ProgressSync.status())+'</b><small>打开后即可练习 · 无需 ChatGPT 订阅 · 记录仅保存在本机</small></div><div class="offline-actions"><button class="secondary" data-offline="export">导出备份</button><button class="text-button" data-offline="pick">导入备份</button><input type="file" id="offline-backup-file" accept=".json,application/json" hidden></div></div><p class="offline-note">'+esc(ProgressSync.issue||'此备用站的记录保存在本机。需要跨设备同步时，先导出备份，再点击“GitHub 登录 · 云端同步”进入新版并导入。清理浏览器数据可能清除本机记录。')+'</p><div id="offline-feedback" role="status" aria-live="polite">'+esc(offlineNotice)+'</div><div id="offline-import-preview"></div></section>';}
 function offlineFeedback(message){offlineNotice=message;const box=document.querySelector('#offline-feedback');if(box)box.textContent=message;}
 function bindSyncPanel(){
  const exportButton=document.querySelector('[data-offline="export"]'),pick=document.querySelector('[data-offline="pick"]'),input=document.querySelector('#offline-backup-file');
