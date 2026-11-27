@@ -260,6 +260,12 @@ select{border-color:#dce3ee;border-radius:9px;color:#435a81;padding:10px 13px}
  .reference-grid.complete-reference-grid{grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:10px}
 }
 
+/* Long phrase practice keeps the full word and its four code slots readable. */
+.phrase-pool-note{margin:12px 0 8px;text-align:center;color:#60759a;font-size:13px;line-height:1.6}
+.typing-target.phrase-target{flex-wrap:wrap;gap:16px 24px}
+.typing-target.phrase-target .target-char.long{display:block;max-width:100%;overflow-wrap:anywhere;text-align:center;line-height:1.5}
+.practice-queue.phrase-queue .queue-item.long{height:auto;min-height:47px;padding:5px 3px}
+
 
 .offline-badge{display:inline-block;padding:5px 10px;border-radius:6px;background:#e9eefc;color:#294ad5;font-size:14px}
 .offline-actions{display:flex;align-items:center;gap:8px;flex-shrink:0}.offline-panel .sync-heading{gap:18px}
@@ -17353,7 +17359,169 @@ const WORDS = [
  ['明','JEG','日 J + 月 E；末横、左右，识别码 G。'],['林','SSY','木 S + 木 S；末捺、左右，识别码 Y。'],['好','VBG','女 V + 子 B；末横、左右，识别码 G。'],['休','WSY','亻 W + 木 S；末捺、左右，识别码 Y。'],['江','IAG','氵 I + 工 A；末横、左右，识别码 G。'],['字','PBF','宀 P + 子 B；末横、上下，识别码 F。'],['安','PVF','宀 P + 女 V；末横、上下，识别码 F。'],['只','KWU','口 K + 八 W；末捺、上下，识别码 U。'],['叭','KWY','口 K + 八 W；末捺、左右，识别码 Y。'],['因','LDI','囗 L + 大 D；内部大末捺、杂合，识别码 I。'],['问','UKD','门 U + 口 K；内部口末横、杂合，识别码 D。'],['红','XAG','纟 X + 工 A；末横、左右，识别码 G。'],['和','TKG','禾 T + 口 K；末横、左右，识别码 G。'],['打','RSH','扌 R + 丁 S；末竖钩归竖、左右，识别码 H。'],['时','JFY','日 J + 寸 F；末点、左右，识别码 Y。'],['本','SGD','木 S + 一 G；末横、杂合，识别码 D。'],['国','LGYI','囗 L + 王 G + 丶 Y；内部末点、杂合，识别码 I。'],['同','MGKD','冂 M + 一 G + 口 K；内部末横、杂合，识别码 D。'],['花','AWXB','艹 A + 亻 W + 匕 X；末折、上下，识别码 B。'],['新','USRH','立 U + 木 S + 斤 R；末竖、左右，识别码 H。'],['想','SHNU','木 S + 目 H + 心 N；末点、上下，识别码 U。'],['语','YGKG','讠 Y + 五 G + 口 K；末横、左右，识别码 G。'],['学','IPBF','学字头 I + 冖 P + 子 B；末横、上下，识别码 F。'],['空','PWAF','宀 P + 八 W + 工 A；末横、上下，识别码 F。'],['妈','VCGG','女 V + 马去底横 C + 一 G；末横、左右，识别码 G。'],['河','ISKG','氵 I + 丁 S + 口 K；末横、左右，识别码 G。'],['海','ITXY','氵 I + 𠂉 T + 母 X；末点、左右，识别码 Y。'],['照','JVKO','日 J + 刀 V + 口 K + 灬 O；四个字根直接取四码。'],['德','TFLN','彳 T + 十 F + 罒 L + 一 G + 心 N；超过四根，取第一、第二、第三、最后一根。'],['找','RAY','扌 R + 戈 A；规范末笔为点，左右识别码 Y。']
 ].map(([char,code,explain])=>({char,code,explain,type:'单字全码'}));
 const COMPONENTS=[['七','AGN','所在键 A + 首笔横 G + 次笔折 N；只有两笔，不重复末笔。'],['乃','BNT','所在键 B + 首笔折 N + 次笔撇 T。'],['力','ENT','所在键 E + 首笔折 N + 次笔撇 T。'],['手','RTGH','所在键 R + 首笔撇 T + 次笔横 G + 末笔竖钩 H。'],['广','OYGT','所在键 O + 首笔点 Y + 次笔横 G + 末笔撇 T。']].map(([char,code,explain])=>({char,code,explain,type:'成字字根全码'}));
-const PHRASES=[['明白','JERR','明 JE + 白 RR，两个字各取前两码。'],['学习','IPNU','学 IP + 习 NU，两个字各取前两码。'],['新世纪','UAXN','新 U + 世 A + 纪 XN，前两字各取第一码、末字取前两码。'],['天天向上','GGTH','天 G + 天 G + 向 T + 上 H，四字各取第一码。']].map(([char,code,explain])=>({char,code,explain,type:'词组规则码'}));
+// Common phrase rule exercises; full codes cross-checked against sources/wubi06-CJK.txt.
+const PHRASES=[
+ ["天气","GDRN","天（全码 GDI）取 GD；气（全码 RNB）取 RN。二字词，各取全码前两码。"],
+ ["正确","GHDQ","正（全码 GHD）取 GH；确（全码 DQEH）取 DQ。二字词，各取全码前两码。"],
+ ["五笔","GGTT","五（全码 GGHG）取 GG；笔（全码 TTFN）取 TT。二字词，各取全码前两码。"],
+ ["城市","FDYM","城（全码 FDNY）取 FD；市（全码 YMHJ）取 YM。二字词，各取全码前两码。"],
+ ["雨水","FGII","雨（全码 FGHY）取 FG；水（全码 IIII）取 II。二字词，各取全码前两码。"],
+ ["声音","FNUJ","声（全码 FNR）取 FN；音（全码 UJF）取 UJ。二字词，各取全码前两码。"],
+ ["大家","DDPG","大（全码 DDDD）取 DD；家（全码 PGEU）取 PG。二字词，各取全码前两码。"],
+ ["成功","DNAE","成（全码 DNXY）取 DN；功（全码 AET）取 AE。二字词，各取全码前两码。"],
+ ["春天","DWGD","春（全码 DWJF）取 DW；天（全码 GDI）取 GD。二字词，各取全码前两码。"],
+ ["树木","SCSS","树（全码 SCFY）取 SC；木（全码 SSSS）取 SS。二字词，各取全码前两码。"],
+ ["标准","SFUW","标（全码 SFIY）取 SF；准（全码 UWYG）取 UW。二字词，各取全码前两码。"],
+ ["本来","SGGO","本（全码 SGD）取 SG；来（全码 GOI）取 GO。二字词，各取全码前两码。"],
+ ["工作","AAWT","工（全码 AAAA）取 AA；作（全码 WTHF）取 WT。二字词，各取全码前两码。"],
+ ["花园","AWLF","花（全码 AWXB）取 AW；园（全码 LFQV）取 LF。二字词，各取全码前两码。"],
+ ["世界","ANLW","世（全码 ANV）取 AN；界（全码 LWJJ）取 LW。二字词，各取全码前两码。"],
+ ["眼睛","HVHG","眼（全码 HVEY）取 HV；睛（全码 HGEG）取 HG。二字词，各取全码前两码。"],
+ ["步骤","HHCG","步（全码 HHR）取 HH；骤（全码 CGBI）取 CG。二字词，各取全码前两码。"],
+ ["目标","HHSF","目（全码 HHHH）取 HH；标（全码 SFIY）取 SF。二字词，各取全码前两码。"],
+ ["明白","JERR","明（全码 JEG）取 JE；白（全码 RRRR）取 RR。二字词，各取全码前两码。"],
+ ["时间","JFUJ","时（全码 JFY）取 JF；间（全码 UJD）取 UJ。二字词，各取全码前两码。"],
+ ["电脑","JNEY","电（全码 JNV）取 JN；脑（全码 EYRB）取 EY。二字词，各取全码前两码。"],
+ ["味道","KFUT","味（全码 KFIY）取 KF；道（全码 UTHP）取 UT。二字词，各取全码前两码。"],
+ ["号码","KGDC","号（全码 KGNB）取 KG；码（全码 DCGG）取 DC。二字词，各取全码前两码。"],
+ ["听说","KRYU","听（全码 KRH）取 KR；说（全码 YUKQ）取 YU。二字词，各取全码前两码。"],
+ ["国家","LGPG","国（全码 LGYI）取 LG；家（全码 PGEU）取 PG。二字词，各取全码前两码。"],
+ ["图片","LTTH","图（全码 LTUI）取 LT；片（全码 THGN）取 TH。二字词，各取全码前两码。"],
+ ["团队","LFBW","团（全码 LFTE）取 LF；队（全码 BWY）取 BW。二字词，各取全码前两码。"],
+ ["同学","MGIP","同（全码 MGKD）取 MG；学（全码 IPBF）取 IP。二字词，各取全码前两码。"],
+ ["山水","MMII","山（全码 MMMM）取 MM；水（全码 IIII）取 II。二字词，各取全码前两码。"],
+ ["岁月","MQEE","岁（全码 MQU）取 MQ；月（全码 EEEE）取 EE。二字词，各取全码前两码。"],
+ ["生活","TGIT","生（全码 TGD）取 TG；活（全码 ITDG）取 IT。二字词，各取全码前两码。"],
+ ["知识","TDYK","知（全码 TDKG）取 TD；识（全码 YKWY）取 YK。二字词，各取全码前两码。"],
+ ["答案","TWPV","答（全码 TWGK）取 TW；案（全码 PVSU）取 PV。二字词，各取全码前两码。"],
+ ["手指","RTRX","手（全码 RTGH）取 RT；指（全码 RXJG）取 RX。二字词，各取全码前两码。"],
+ ["打字","RSPB","打（全码 RSH）取 RS；字（全码 PBF）取 PB。二字词，各取全码前两码。"],
+ ["提示","RJFI","提（全码 RJGH）取 RJ；示（全码 FIU）取 FI。二字词，各取全码前两码。"],
+ ["月亮","EEYK","月（全码 EEEE）取 EE；亮（全码 YKPW）取 YK。二字词，各取全码前两码。"],
+ ["朋友","EEDC","朋（全码 EEG）取 EE；友（全码 DCU）取 DC。二字词，各取全码前两码。"],
+ ["办法","EWIF","办（全码 EWI）取 EW；法（全码 IFCY）取 IF。二字词，各取全码前两码。"],
+ ["人民","WWNA","人（全码 WWWW）取 WW；民（全码 NAV）取 NA。二字词，各取全码前两码。"],
+ ["休息","WSTH","休（全码 WSY）取 WS；息（全码 THNU）取 TH。二字词，各取全码前两码。"],
+ ["信息","WYTH","信（全码 WYG）取 WY；息（全码 THNU）取 TH。二字词，各取全码前两码。"],
+ ["金色","QQQC","金（全码 QQQQ）取 QQ；色（全码 QCB）取 QC。二字词，各取全码前两码。"],
+ ["名字","QKPB","名（全码 QKF）取 QK；字（全码 PBF）取 PB。二字词，各取全码前两码。"],
+ ["夕阳","QTBJ","夕（全码 QTNY）取 QT；阳（全码 BJG）取 BJ。二字词，各取全码前两码。"],
+ ["语言","YGYY","语（全码 YGKG）取 YG；言（全码 YYYY）取 YY。二字词，各取全码前两码。"],
+ ["文字","YYPB","文（全码 YYGY）取 YY；字（全码 PBF）取 PB。二字词，各取全码前两码。"],
+ ["方向","YYTM","方（全码 YYGT）取 YY；向（全码 TMKD）取 TM。二字词，各取全码前两码。"],
+ ["新闻","USUB","新（全码 USRH）取 US；闻（全码 UBD）取 UB。二字词，各取全码前两码。"],
+ ["门口","UYKK","门（全码 UYHN）取 UY；口（全码 KKKK）取 KK。二字词，各取全码前两码。"],
+ ["问题","UKJG","问（全码 UKD）取 UK；题（全码 JGHM）取 JG。二字词，各取全码前两码。"],
+ ["学习","IPNU","学（全码 IPBF）取 IP；习（全码 NUD）取 NU。二字词，各取全码前两码。"],
+ ["汉字","ICPB","汉（全码 ICY）取 IC；字（全码 PBF）取 PB。二字词，各取全码前两码。"],
+ ["水果","IIJS","水（全码 IIII）取 II；果（全码 JSI）取 JS。二字词，各取全码前两码。"],
+ ["灯光","OSIG","灯（全码 OSH）取 OS；光（全码 IGQB）取 IG。二字词，各取全码前两码。"],
+ ["米饭","OYQN","米（全码 OYTY）取 OY；饭（全码 QNRC）取 QN。二字词，各取全码前两码。"],
+ ["座位","OWWU","座（全码 OWWF）取 OW；位（全码 WUG）取 WU。二字词，各取全码前两码。"],
+ ["安全","PVWG","安（全码 PVF）取 PV；全（全码 WGF）取 WG。二字词，各取全码前两码。"],
+ ["字体","PBWS","字（全码 PBF）取 PB；体（全码 WSGG）取 WS。二字词，各取全码前两码。"],
+ ["完成","PFDN","完（全码 PFQB）取 PF；成（全码 DNXY）取 DN。二字词，各取全码前两码。"],
+ ["心情","NYNG","心（全码 NYNY）取 NY；情（全码 NGEG）取 NG。二字词，各取全码前两码。"],
+ ["快速","NNGK","快（全码 NNWY）取 NN；速（全码 GKIP）取 GK。二字词，各取全码前两码。"],
+ ["习惯","NUNX","习（全码 NUD）取 NU；惯（全码 NXFM）取 NX。二字词，各取全码前两码。"],
+ ["阳光","BJIG","阳（全码 BJG）取 BJ；光（全码 IGQB）取 IG。二字词，各取全码前两码。"],
+ ["孩子","BYBB","孩（全码 BYNW）取 BY；子（全码 BBBB）取 BB。二字词，各取全码前两码。"],
+ ["耳朵","BGWS","耳（全码 BGHG）取 BG；朵（全码 WSU）取 WS。二字词，各取全码前两码。"],
+ ["姓名","VTQK","姓（全码 VTGG）取 VT；名（全码 QKF）取 QK。二字词，各取全码前两码。"],
+ ["好友","VBDC","好（全码 VBG）取 VB；友（全码 DCU）取 DC。二字词，各取全码前两码。"],
+ ["建议","VGYY","建（全码 VGPK）取 VG；议（全码 YYRY）取 YY。二字词，各取全码前两码。"],
+ ["欢迎","CQQB","欢（全码 CQWY）取 CQ；迎（全码 QBPK）取 QB。二字词，各取全码前两码。"],
+ ["双手","CCRT","双（全码 CCY）取 CC；手（全码 RTGH）取 RT。二字词，各取全码前两码。"],
+ ["对话","CFYT","对（全码 CFY）取 CF；话（全码 YTDG）取 YT。二字词，各取全码前两码。"],
+ ["练习","XANU","练（全码 XANW）取 XA；习（全码 NUD）取 NU。二字词，各取全码前两码。"],
+ ["结束","XFGK","结（全码 XFKG）取 XF；束（全码 GKII）取 GK。二字词，各取全码前两码。"],
+ ["线条","XFTS","线（全码 XFXY）取 XF；条（全码 TSU）取 TS。二字词，各取全码前两码。"],
+ ["环境","GDFU","环（全码 GDHY）取 GD；境（全码 FUJQ）取 FU。二字词，各取全码前两码。"],
+ ["技术","RFSY","技（全码 RFCY）取 RF；术（全码 SYI）取 SY。二字词，各取全码前两码。"],
+ ["键盘","QVTE","键（全码 QVGP）取 QV；盘（全码 TELF）取 TE。二字词，各取全码前两码。"],
+ ["输入","LWTY","输（全码 LWGJ）取 LW；入（全码 TYI）取 TY。二字词，各取全码前两码。"],
+ ["规则","FWMJ","规（全码 FWMQ）取 FW；则（全码 MJH）取 MJ。二字词，各取全码前两码。"],
+ ["新世纪","UAXN","新（全码 USRH）取 U；世（全码 ANV）取 A；纪（全码 XNN）取 XN。三字词，前两字各取全码首码，末字取前两码。"],
+ ["幼儿园","XQLF","幼（全码 XET）取 X；儿（全码 QTN）取 Q；园（全码 LFQV）取 LF。三字词，前两字各取全码首码，末字取前两码。"],
+ ["图书馆","LNQN","图（全码 LTUI）取 L；书（全码 NNHY）取 N；馆（全码 QNPN）取 QN。三字词，前两字各取全码首码，末字取前两码。"],
+ ["办公室","EWPG","办（全码 EWI）取 E；公（全码 WCU）取 W；室（全码 PGCF）取 PG。三字词，前两字各取全码首码，末字取前两码。"],
+ ["计算机","YTSW","计（全码 YFH）取 Y；算（全码 THAJ）取 T；机（全码 SWN）取 SW。三字词，前两字各取全码首码，末字取前两码。"],
+ ["输入法","LTIF","输（全码 LWGJ）取 L；入（全码 TYI）取 T；法（全码 IFCY）取 IF。三字词，前两字各取全码首码，末字取前两码。"],
+ ["显示器","JFKK","显（全码 JOGF）取 J；示（全码 FIU）取 F；器（全码 KKDK）取 KK。三字词，前两字各取全码首码，末字取前两码。"],
+ ["打印机","RQSW","打（全码 RSH）取 R；印（全码 QGBH）取 Q；机（全码 SWN）取 SW。三字词，前两字各取全码首码，末字取前两码。"],
+ ["身份证","TWYG","身（全码 TMDT）取 T；份（全码 WWVT）取 W；证（全码 YGHG）取 YG。三字词，前两字各取全码首码，末字取前两码。"],
+ ["笔记本","TYSG","笔（全码 TTFN）取 T；记（全码 YNN）取 Y；本（全码 SGD）取 SG。三字词，前两字各取全码首码，末字取前两码。"],
+ ["普通话","UCYT","普（全码 UOGJ）取 U；通（全码 CEHP）取 C；话（全码 YTDG）取 YT。三字词，前两字各取全码首码，末字取前两码。"],
+ ["自然界","TQLW","自（全码 THD）取 T；然（全码 QDYO）取 Q；界（全码 LWJJ）取 LW。三字词，前两字各取全码首码，末字取前两码。"],
+ ["好朋友","VEDC","好（全码 VBG）取 V；朋（全码 EEG）取 E；友（全码 DCU）取 DC。三字词，前两字各取全码首码，末字取前两码。"],
+ ["手提包","RRQN","手（全码 RTGH）取 R；提（全码 RJGH）取 R；包（全码 QNV）取 QN。三字词，前两字各取全码首码，末字取前两码。"],
+ ["公交车","WYLG","公（全码 WCU）取 W；交（全码 YWRU）取 Y；车（全码 LGNH）取 LG。三字词，前两字各取全码首码，末字取前两码。"],
+ ["飞机场","NSFN","飞（全码 NUI）取 N；机（全码 SWN）取 S；场（全码 FNRT）取 FN。三字词，前两字各取全码首码，末字取前两码。"],
+ ["洗衣机","IYSW","洗（全码 ITFQ）取 I；衣（全码 YEU）取 Y；机（全码 SWN）取 SW。三字词，前两字各取全码首码，末字取前两码。"],
+ ["电冰箱","JUTS","电（全码 JNV）取 J；冰（全码 UIY）取 U；箱（全码 TSHF）取 TS。三字词，前两字各取全码首码，末字取前两码。"],
+ ["运动会","FFWF","运（全码 FCPI）取 F；动（全码 FCET）取 F；会（全码 WFCU）取 WF。三字词，前两字各取全码首码，末字取前两码。"],
+ ["游泳池","IIIB","游（全码 IYTB）取 I；泳（全码 IYNI）取 I；池（全码 IBN）取 IB。三字词，前两字各取全码首码，末字取前两码。"],
+ ["早餐店","JHOH","早（全码 JFJ）取 J；餐（全码 HQCE）取 H；店（全码 OHKD）取 OH。三字词，前两字各取全码首码，末字取前两码。"],
+ ["电影院","JJBP","电（全码 JNV）取 J；影（全码 JYKE）取 J；院（全码 BPFQ）取 BP。三字词，前两字各取全码首码，末字取前两码。"],
+ ["方向盘","YTTE","方（全码 YYGT）取 Y；向（全码 TMKD）取 T；盘（全码 TELF）取 TE。三字词，前两字各取全码首码，末字取前两码。"],
+ ["地铁站","FQUH","地（全码 FBN）取 F；铁（全码 QRWY）取 Q；站（全码 UHKG）取 UH。三字词，前两字各取全码首码，末字取前两码。"],
+ ["红绿灯","XXOS","红（全码 XAG）取 X；绿（全码 XVIY）取 X；灯（全码 OSH）取 OS。三字词，前两字各取全码首码，末字取前两码。"],
+ ["安全带","PWGK","安（全码 PVF）取 P；全（全码 WGF）取 W；带（全码 GKPH）取 GK。三字词，前两字各取全码首码，末字取前两码。"],
+ ["国庆节","LOAB","国（全码 LGYI）取 L；庆（全码 ODI）取 O；节（全码 ABJ）取 AB。三字词，前两字各取全码首码，末字取前两码。"],
+ ["花生米","ATOY","花（全码 AWXB）取 A；生（全码 TGD）取 T；米（全码 OYTY）取 OY。三字词，前两字各取全码首码，末字取前两码。"],
+ ["互联网","GBMR","互（全码 GXGD）取 G；联（全码 BUDY）取 B；网（全码 MRRI）取 MR。三字词，前两字各取全码首码，末字取前两码。"],
+ ["机器人","SKWW","机（全码 SWN）取 S；器（全码 KKDK）取 K；人（全码 WWWW）取 WW。三字词，前两字各取全码首码，末字取前两码。"],
+ ["说明书","YJNN","说（全码 YUKQ）取 Y；明（全码 JEG）取 J；书（全码 NNHY）取 NN。三字词，前两字各取全码首码，末字取前两码。"],
+ ["卫生间","BTUJ","卫（全码 BGD）取 B；生（全码 TGD）取 T；间（全码 UJD）取 UJ。三字词，前两字各取全码首码，末字取前两码。"],
+ ["天天向上","GGTH","天（全码 GDI）取 G；天（全码 GDI）取 G；向（全码 TMKD）取 T；上（全码 HGD）取 H。四字词，各取全码首码。"],
+ ["认真学习","YFIN","认（全码 YWY）取 Y；真（全码 FHWU）取 F；学（全码 IPBF）取 I；习（全码 NUD）取 N。四字词，各取全码首码。"],
+ ["文明用语","YJEY","文（全码 YYGY）取 Y；明（全码 JEG）取 J；用（全码 EHK）取 E；语（全码 YGKG）取 Y。四字词，各取全码首码。"],
+ ["保护环境","WRGF","保（全码 WKSY）取 W；护（全码 RYNT）取 R；环（全码 GDHY）取 G；境（全码 FUJQ）取 F。四字词，各取全码首码。"],
+ ["注意安全","IUPW","注（全码 IYGG）取 I；意（全码 UJNU）取 U；安（全码 PVF）取 P；全（全码 WGF）取 W。四字词，各取全码首码。"],
+ ["团结合作","LXWW","团（全码 LFTE）取 L；结（全码 XFKG）取 X；合（全码 WGKF）取 W；作（全码 WTHF）取 W。四字词，各取全码首码。"],
+ ["勤奋努力","ADVE","勤（全码 AKGE）取 A；奋（全码 DLF）取 D；努（全码 VCER）取 V；力（全码 ENT）取 E。四字词，各取全码首码。"],
+ ["实事求是","PGGJ","实（全码 PUDU）取 P；事（全码 GKVH）取 G；求（全码 GIYI）取 G；是（全码 JGHU）取 J。四字词，各取全码首码。"],
+ ["脚踏实地","EKPF","脚（全码 EFCB）取 E；踏（全码 KHIJ）取 K；实（全码 PUDU）取 P；地（全码 FBN）取 F。四字词，各取全码首码。"],
+ ["一心一意","GNGU","一（全码 GGLL）取 G；心（全码 NYNY）取 N；一（全码 GGLL）取 G；意（全码 UJNU）取 U。四字词，各取全码首码。"],
+ ["四季如春","LTVD","四（全码 LHNG）取 L；季（全码 TBF）取 T；如（全码 VKG）取 V；春（全码 DWJF）取 D。四字词，各取全码首码。"],
+ ["春暖花开","DJAG","春（全码 DWJF）取 D；暖（全码 JEGC）取 J；花（全码 AWXB）取 A；开（全码 GAK）取 G。四字词，各取全码首码。"],
+ ["鸟语花香","QYAT","鸟（全码 QYNG）取 Q；语（全码 YGKG）取 Y；花（全码 AWXB）取 A；香（全码 TJF）取 T。四字词，各取全码首码。"],
+ ["风和日丽","WTJG","风（全码 WRI）取 W；和（全码 TKG）取 T；日（全码 JJJJ）取 J；丽（全码 GMYY）取 G。四字词，各取全码首码。"],
+ ["山清水秀","MIIT","山（全码 MMMM）取 M；清（全码 IGEG）取 I；水（全码 IIII）取 I；秀（全码 TBR）取 T。四字词，各取全码首码。"],
+ ["万紫千红","GHTX","万（全码 GQE）取 G；紫（全码 HXXI）取 H；千（全码 TFK）取 T；红（全码 XAG）取 X。四字词，各取全码首码。"],
+ ["欢声笑语","CFTY","欢（全码 CQWY）取 C；声（全码 FNR）取 F；笑（全码 TTDU）取 T；语（全码 YGKG）取 Y。四字词，各取全码首码。"],
+ ["五光十色","GIFQ","五（全码 GGHG）取 G；光（全码 IGQB）取 I；十（全码 FGH）取 F；色（全码 QCB）取 Q。四字词，各取全码首码。"],
+ ["大街小巷","DTIA","大（全码 DDDD）取 D；街（全码 TFFS）取 T；小（全码 IHTY）取 I；巷（全码 AWNB）取 A。四字词，各取全码首码。"],
+ ["名胜古迹","QEDY","名（全码 QKF）取 Q；胜（全码 ETGG）取 E；古（全码 DGHG）取 D；迹（全码 YOPI）取 Y。四字词，各取全码首码。"],
+ ["信息技术","WTRS","信（全码 WYG）取 W；息（全码 THNU）取 T；技（全码 RFCY）取 R；术（全码 SYI）取 S。四字词，各取全码首码。"],
+ ["科学知识","TITY","科（全码 TUFH）取 T；学（全码 IPBF）取 I；知（全码 TDKG）取 T；识（全码 YKWY）取 Y。四字词，各取全码首码。"],
+ ["生活用品","TIEK","生（全码 TGD）取 T；活（全码 ITDG）取 I；用（全码 EHK）取 E；品（全码 KKKF）取 K。四字词，各取全码首码。"],
+ ["公共交通","WAYC","公（全码 WCU）取 W；共（全码 AWU）取 A；交（全码 YWRU）取 Y；通（全码 CEHP）取 C。四字词，各取全码首码。"],
+ ["体育锻炼","WYQO","体（全码 WSGG）取 W；育（全码 YCEF）取 Y；锻（全码 QWDC）取 Q；炼（全码 OANW）取 O。四字词，各取全码首码。"],
+ ["垃圾分类","FFWO","垃（全码 FUG）取 F；圾（全码 FBYY）取 F；分（全码 WVR）取 W；类（全码 ODU）取 O。四字词，各取全码首码。"],
+ ["节约用水","AXEI","节（全码 ABJ）取 A；约（全码 XQYY）取 X；用（全码 EHK）取 E；水（全码 IIII）取 I。四字词，各取全码首码。"],
+ ["绿色生活","XQTI","绿（全码 XVIY）取 X；色（全码 QCB）取 Q；生（全码 TGD）取 T；活（全码 ITDG）取 I。四字词，各取全码首码。"],
+ ["健康生活","WOTI","健（全码 WVGP）取 W；康（全码 OVII）取 O；生（全码 TGD）取 T；活（全码 ITDG）取 I。四字词，各取全码首码。"],
+ ["互相帮助","GSDE","互（全码 GXGD）取 G；相（全码 SHG）取 S；帮（全码 DTBH）取 D；助（全码 EGET）取 E。四字词，各取全码首码。"],
+ ["按时完成","RJPD","按（全码 RPVG）取 R；时（全码 JFY）取 J；完（全码 PFQB）取 P；成（全码 DNXY）取 D。四字词，各取全码首码。"],
+ ["心想事成","NSGD","心（全码 NYNY）取 N；想（全码 SHNU）取 S；事（全码 GKVH）取 G；成（全码 DNXY）取 D。四字词，各取全码首码。"],
+ ["新世纪五笔输入法","UAXI","第 1 字 新（全码 USRH）取 U；第 2 字 世（全码 ANV）取 A；第 3 字 纪（全码 XNN）取 X；第 8 字 法（全码 IFCY）取 I。五字及以上，取第一、二、三字和最后一字的全码首码。"],
+ ["汉语拼音输入法","IYRI","第 1 字 汉（全码 ICY）取 I；第 2 字 语（全码 YGKG）取 Y；第 3 字 拼（全码 RUAH）取 R；第 7 字 法（全码 IFCY）取 I。五字及以上，取第一、二、三字和最后一字的全码首码。"],
+ ["中华人民共和国","KWWL","第 1 字 中（全码 KHK）取 K；第 2 字 华（全码 WXFJ）取 W；第 3 字 人（全码 WWWW）取 W；第 7 字 国（全码 LGYI）取 L。五字及以上，取第一、二、三字和最后一字的全码首码。"],
+ ["计算机应用技术","YTSS","第 1 字 计（全码 YFH）取 Y；第 2 字 算（全码 THAJ）取 T；第 3 字 机（全码 SWN）取 S；第 7 字 术（全码 SYI）取 S。五字及以上，取第一、二、三字和最后一字的全码首码。"],
+ ["公共交通工具","WAYH","第 1 字 公（全码 WCU）取 W；第 2 字 共（全码 AWU）取 A；第 3 字 交（全码 YWRU）取 Y；第 6 字 具（全码 HWU）取 H。五字及以上，取第一、二、三字和最后一字的全码首码。"],
+ ["爱护公共财物","ERWT","第 1 字 爱（全码 EPDC）取 E；第 2 字 护（全码 RYNT）取 R；第 3 字 公（全码 WCU）取 W；第 6 字 物（全码 TQRT）取 T。五字及以上，取第一、二、三字和最后一字的全码首码。"],
+ ["食品安全知识","WKPY","第 1 字 食（全码 WYVE）取 W；第 2 字 品（全码 KKKF）取 K；第 3 字 安（全码 PVF）取 P；第 6 字 识（全码 YKWY）取 Y。五字及以上，取第一、二、三字和最后一字的全码首码。"],
+ ["环境保护意识","GFWY","第 1 字 环（全码 GDHY）取 G；第 2 字 境（全码 FUJQ）取 F；第 3 字 保（全码 WKSY）取 W；第 6 字 识（全码 YKWY）取 Y。五字及以上，取第一、二、三字和最后一字的全码首码。"],
+ ["知识就是力量","TYYJ","第 1 字 知（全码 TDKG）取 T；第 2 字 识（全码 YKWY）取 Y；第 3 字 就（全码 YKIY）取 Y；第 6 字 量（全码 JGJF）取 J。五字及以上，取第一、二、三字和最后一字的全码首码。"],
+ ["失败是成功之母","RMJX","第 1 字 失（全码 RWI）取 R；第 2 字 败（全码 MTY）取 M；第 3 字 是（全码 JGHU）取 J；第 7 字 母（全码 XNNY）取 X。五字及以上，取第一、二、三字和最后一字的全码首码。"],
+ ["功夫不负有心人","AFDW","第 1 字 功（全码 AET）取 A；第 2 字 夫（全码 FWI）取 F；第 3 字 不（全码 DHI）取 D；第 7 字 人（全码 WWWW）取 W。五字及以上，取第一、二、三字和最后一字的全码首码。"],
+ ["世上无难事","AHFG","第 1 字 世（全码 ANV）取 A；第 2 字 上（全码 HGD）取 H；第 3 字 无（全码 FQV）取 F；第 5 字 事（全码 GKVH）取 G。五字及以上，取第一、二、三字和最后一字的全码首码。"],
+ ["百闻不如一见","DUDM","第 1 字 百（全码 DJF）取 D；第 2 字 闻（全码 UBD）取 U；第 3 字 不（全码 DHI）取 D；第 6 字 见（全码 MQB）取 M。五字及以上，取第一、二、三字和最后一字的全码首码。"],
+ ["一寸光阴一寸金","GFIQ","第 1 字 一（全码 GGLL）取 G；第 2 字 寸（全码 FGHY）取 F；第 3 字 光（全码 IGQB）取 I；第 7 字 金（全码 QQQQ）取 Q。五字及以上，取第一、二、三字和最后一字的全码首码。"],
+ ["众人拾柴火焰高","WWRY","第 1 字 众（全码 WWWU）取 W；第 2 字 人（全码 WWWW）取 W；第 3 字 拾（全码 RWGK）取 R；第 7 字 高（全码 YKMK）取 Y。五字及以上，取第一、二、三字和最后一字的全码首码。"],
+ ["冰冻三尺非一日之寒","UUDP","第 1 字 冰（全码 UIY）取 U；第 2 字 冻（全码 UAIY）取 U；第 3 字 三（全码 DGGG）取 D；第 9 字 寒（全码 PAWU）取 P。五字及以上，取第一、二、三字和最后一字的全码首码。"]
+].map(([char,code,explain])=>({char,code,explain,type:'词组规则码'}));
 const special=[['社','PYFG','礻取 PY + 土 F + 末横左右识别 G。'],['初','PUVT','衤取 PU + 刀 V + 末撇左右识别 T。'],['独','QTJY','犭取 QT + 虫 J + 末点左右识别 Y。']].map(([char,code,explain])=>({char,code,explain,type:'双码字根练习'}));
 const rootQuestions=(keys,includeVariants=false)=>typeof RootCatalog==='undefined'?[...keys].flatMap(k=>ROOTS[k].roots.map(char=>({char,code:k,explain:char+'在 '+k+' 键。'+ROOTS[k].extra,type:'字根所在键'}))):RootCatalog.records.filter(r=>keys.includes(r.key)&&(includeVariants||r.basic)).map(r=>({...(r.basic?{}:{id:r.id}),rootId:r.id,char:r.label,code:r.key,explain:'这个字根在 '+r.key+' 键。'+ROOTS[r.key].extra,type:'字根所在键'}));
 const shortQuestions=Object.entries(ROOTS).map(([key,r])=>({char:r.short,code:key,explain:'一级简码：'+r.short+' = '+key+' + 空格。简码是固定映射，不一定等于全码的第一码。',type:'一级简码'}));
@@ -17369,7 +17537,7 @@ const LESSONS=[
  {title:'拆字与取码顺序',stage:'第二阶段 / 拆字取码',heading:'顺着笔顺，取完整的字根。',intro:'普通合体字按笔顺拆成字根。先遵循书写顺序，再尽量取完整的大字根；需要权衡时，参考“兼顾直观、能连不交、能散不连”。字根必须是字根表中已有的形体。',body:'<div class="rule-grid"><div><b>2–3 个字根</b><p>依次取码，再加一个末笔字型识别码。</p></div><div><b>4 个字根</b><p>依次取四码，不再加识别码。</p></div><div><b>超过 4 个字根</b><p>取第一、第二、第三、最后一个字根。</p></div></div><div class="example-row"><span>照 <b>J V K O</b><small>日 + 刀 + 口 + 灬</small></span><span>德 <b>T F L N</b><small>彳 + 十 + 罒 + 一 + 心，省去中间的一</small></span></div><div class="note">“两根 + 识别码”只有三码，不要为了凑四码重复输入。下一课专门练识别码。</div>',goals:['顺笔顺拆分并取大字根','四个字根直接取四码','超过四根取一、二、三、末'],questions:WORDS.filter(q=>['照','德','明','好','林','新','想','河'].includes(q.char))},
  {title:'末笔字型识别码',stage:'第二阶段 / 拆字取码',heading:'最后一码，看末笔，也看字型。',intro:'普通字只有两根或三根时，补一个识别码。先找末笔，再判断左右、上下或杂合结构，在表中交叉找到字母。',body:idTable+'<div class="example-row"><span>叭 <b>KWY</b><small>口 + 八，末捺，左右型</small></span><span>只 <b>KWU</b><small>口 + 八，末捺，上下型</small></span></div><div class="note">包围字通常看被包围部分的末笔，如“因”看“大”的末捺。新世纪版按规范笔顺，“找”的末笔为点，编码 RAY。</div>',goals:['先找末笔所属笔画','再判断左右、上下、杂合','对照“叭 / 只”理解字型区别'],questions:WORDS.filter(q=>!['照','德'].includes(q.char))},
  {title:'一级简码',stage:'第三阶段 / 熟练输入',heading:'常用的字，只按一个字母。',intro:'一级简码是 25 个常用字的固定快捷映射。实际使用输入法时，按字母再按空格选字；这里用于键位记忆，按对字母立即换字，不用再按空格。',body:'<div class="short-groups">'+ZONES.map(z=>'<div><span>'+z.keys.split('').join('　')+'</span><b>'+[...z.keys].map(k=>ROOTS[k].short).join('　')+'</b></div>').join('')+'</div><div class="note">简码不一定是全码的开头。例如“我”的一级简码是 Q，全码是 TRXY。二、三级简码通常取全码的前二、前三码，具体可用简码以输入法词库为准。</div>',goals:['记住 25 个固定映射','按对自动前进，连续记忆键位','不把简码与全码混淆'],questions:shortQuestions},
- {title:'词组取码',stage:'第三阶段 / 熟练输入',heading:'把单字连成词。',intro:'词组通常取四码，使用各字的全码取码，不能拿一级简码代替。词组能否直接输入，还取决于你使用的输入法词库。',body:'<div class="rule-grid"><div><b>二字词：2 + 2</b><p>各取前两码，如明白 JERR。</p></div><div><b>三字词：1 + 1 + 2</b><p>前两字各取首码，最后一个字取前两码。</p></div><div><b>四字及以上：1 + 1 + 1 + 末1</b><p>取前一、二、三字和最后一字的首码。</p></div></div><div class="note">“新世纪”取新 U、世 A、纪 XN，得到 UAXN。这里练的是词组取码规则，不承诺所有输入法词库都收录该词。</div>',goals:['二字词各取前两码','三字词用 1 + 1 + 2','长词取前三字和末字首码'],questions:PHRASES},
+ {title:'词组取码',stage:'第三阶段 / 熟练输入',heading:'把单字连成词。',intro:'160 条常用词组：80 个二字词、32 个三字词、32 个四字词和 16 个长词。每轮随机抽取 60 个不同词组。取码使用单字全码，不能拿一级简码代替；实际输入仍需输入法词库收录。',body:'<div class="rule-grid"><div><b>二字词：2 + 2</b><p>各取前两码，如明白 JERR。</p></div><div><b>三字词：1 + 1 + 2</b><p>前两字各取首码，最后一个字取前两码。</p></div><div><b>四字及以上：1 + 1 + 1 + 末1</b><p>取前一、二、三字和最后一字的首码。</p></div></div><div class="note">“新世纪”取新 U、世 A、纪 XN，得到 UAXN。这里练的是词组取码规则，不承诺所有输入法词库都收录该词。</div>',goals:['二字词各取前两码','三字词用 1 + 1 + 2','长词取前三字和末字首码'],questions:PHRASES},
  {title:'进阶：双码字根',stage:'第三阶段 / 熟练输入',heading:'有些字根，需要两个字母。',intro:'新世纪五笔有需要补码的双码字根。遇到它们，要把补码作为编码的一部分，不能只取字根所在键。先熟悉下面几个常见的偏旁。',body:'<div class="example-row"><span>礻 <b>PY</b></span><span>衤 <b>PU</b></span><span>犭 <b>QT</b></span><span>飠 <b>WY</b></span></div><p>例如“社”：礻 PY + 土 F + 识别码 G = PYFG。与普通字一样，遇到具体字形仍需结合规范取码规则判断。</p><div class="note">继续练习时，只使用新世纪版资料。容易混淆的归位包括：力、臼在 E；乃在 B；几在 W；广在 O；乂在 R。</div>',goals:['认识几个常见双码字根','把补码算入编码','使用新世纪专用码表查证'],questions:special}
 ];
 
@@ -17902,7 +18070,7 @@ function save(){ProgressSync.settings(saved.lesson,saved.hints);}
 function number(n){return String(n+1).padStart(2,'0');}
 function questionID(q){return q.id||`${q.type}:${q.char}:${q.code}`;}
 function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
-function begin(questions,title,lessonId=null,review=false,ordered=false){const round=(review||ordered)?[...questions]:PracticeEngine.buildRound(questions,60);run={...PracticeEngine.create(round),title,lessonId,review,ordered,hint:saved.hints,recorded:false,message:'切换到英文输入，按键就开始。',messageType:'',composing:false,cloudAdded:new Set()};}
+function begin(questions,title,lessonId=null,review=false,ordered=false){const round=(review||ordered)?[...questions]:PracticeEngine.buildRound(questions,60);run={...PracticeEngine.create(round),title,lessonId,review,ordered,phrasePool:questions===PHRASES&&!review&&!ordered,hint:saved.hints,recorded:false,message:'切换到英文输入，按键就开始。',messageType:'',composing:false,cloudAdded:new Set()};}
 function lessonComplete(id){return LESSONS[id]?.kind!=='reading'&&saved.completed.includes(id);}
 function practiceProgress(){const ids=LESSONS.map((l,i)=>i).filter(i=>LESSONS[i].kind!=='reading');return {completed:ids.filter(lessonComplete).length,total:ids.length};}
 function nav(){return `<aside class="sidebar"><a class="brand" href="#classroom"><span class="brand-mark">五</span><span>五笔研习室<small>WUBI STUDY ROOM</small></span></a><div class="edition">新世纪版 · 第三代五笔</div><nav aria-label="主导航">${[['classroom','学习课堂'],['reference','字根速查'],['lookup','拆字查询'],['practice','专项练习']].map(([v,t])=>`<button class="nav ${view===v?'active':''}" data-view="${v}" ${view===v?'aria-current="page"':''}><span aria-hidden="true">${icons[v]}</span>${t}</button>`).join('')}</nav><div class="side-label">练习完成 <span>${practiceProgress().completed} / ${practiceProgress().total}</span></div><div class="side-progress"><i style="width:${practiceProgress().completed/practiceProgress().total*100}%"></i></div><div id="course-list">${LESSONS.map((l,i)=>`<button class="course ${view==='classroom'&&lesson===i?'active':''} ${lessonComplete(i)?'done':''}" data-lesson="${i}"><span>${lessonComplete(i)?'✓':number(i)}</span>${l.title}</button>`).join('')}</div><div class="side-footer">每天一点，慢慢成习惯。<small id="storage-note">${esc(ProgressSync.status())}</small></div></aside>`;}
@@ -17913,12 +18081,12 @@ function zoneRootCards(keys){const zone=ZONES.findIndex(z=>z.keys===keys);return
 
 function keyboard(){return `<section class="panel keyboard-panel"><div class="panel-heading"><h2>你的字根键盘</h2><span class="muted">点击按键，查看字根</span></div><div class="keyboard">${['QWERTYUIOP','ASDFGHJKL','ZXCVBNM'].map(row=>`<div class="key-row">${[...row].map(k=>`<button class="key ${k===selectedKey?'active':''} ${k==='Z'?'disabled':''}" data-key="${k}" data-zone="${ZONES.findIndex(z=>z.keys.includes(k))}" aria-label="${k} ${ROOTS[k]?.name||'非字根键'}" aria-pressed="${k===selectedKey}" ${k==='Z'?'disabled':''}><b>${k}</b><small aria-hidden="true">${keyNameGlyph(k)}</small></button>`).join('')}</div>`).join('')}</div><div class="legend">${ZONES.map(z=>`<span><i style="--color:${z.color}"></i>${z.stroke} ${z.name}</span>`).join('')}</div><div id="key-detail">${keyDetail()}</div></section>`;}
 function keyDetail(){const r=ROOTS[selectedKey],i=ZONES.findIndex(z=>z.keys.includes(selectedKey)),z=ZONES[i];return `<div class="key-detail" data-zone="${i}"><kbd>${selectedKey}</kbd><div><b>${z.name} · ${r.name}</b><p class="root-set-meta">全部 ${keyRootRecords(selectedKey).length} 个形体 · 含变体</p><div class="key-shape-gallery complete-root-gallery">${keyRootItems(selectedKey)}</div><div class="key-mnemonic">${MNEMONICS[selectedKey]}</div><small>${r.extra} 一级简码：${r.short}。</small></div></div>`;}
-function exercise(){if(!run||!run.questions.length)return '<div class="panel empty"><h2>还没有错题</h2><p>答错的字根会自动记在这里，随时可以回来重练。</p><button class="primary" data-action="start-roots">开始字根练习</button></div>';if(run.finished)return results();const q=run.questions[run.index];return `<section class="panel exercise-panel continuous" id="exercise-panel"><div class="panel-heading"><h2>连续练习</h2><span id="question-counter" class="muted">${esc(q.type)} · ${run.index+1} / ${run.questions.length}</span></div><div class="live-stats"><div><small>已完成</small><strong><span id="stat-progress">${run.index}</span><em> / ${run.questions.length}</em></strong></div><div><small>按键准确率</small><strong id="stat-accuracy">—</strong></div><div><small>错键次数</small><strong id="stat-errors">${run.errors}</strong></div><div><small>练习用时</small><strong id="stat-time">00:00</strong></div></div><div class="exercise-progress" role="progressbar" aria-label="练习进度" aria-valuemin="0" aria-valuemax="${run.questions.length}" aria-valuenow="${run.index}"><i style="width:${run.index/run.questions.length*100}%"></i></div>${run.lessonId!==null&&LESSONS[run.lessonId]?.rootKeys?'<p class="lesson-root-coverage">本课 '+LESSONS[run.lessonId].questions.length+' 个形体（含变体）全部入题：先逐个练一遍，再重复巩固至 60 题。</p>':''}<p class="instruction">按对立即前进 · 多字母编码输完自动换字 · 不用回车或空格</p>${run.rootMode?'<div id="root-run-progress">'+rootProgress()+'</div>':''}${articlePassage()}<div class="typing-stage"><div class="stage-heading"><div class="stage-label">当前题目</div><button class="stroke-replay" data-action="stroke-replay" title="特殊部件按字形逐笔演示" ${(RootPractice.resolve(q)?.strokeDrawing&&!RootPractice.resolve(q)?.kaiOutline&&!RootPractice.resolve(q)?.preferOriginal)?'':'hidden'}>逐笔写一遍</button></div><div class="typing-target"><div class="target-char ${RootPractice.resolve(q)?'root-target':q.char.length>2?'long':''}">${questionShape(q)}</div><div id="code-slots" class="code-slots" aria-label="当前编码进度">${codeSlots()}</div></div><form id="answer-form"><label class="sr-only" for="answer">练习输入区</label><input id="answer" class="code-input" type="text" inputmode="text" autocapitalize="off" autocomplete="off" spellcheck="false" placeholder="点击这里，直接按键" aria-describedby="feedback" aria-label="练习输入区"></form><div id="feedback" class="feedback" role="status" aria-live="polite">${esc(run.message)}</div><div id="mnemonic-hint" class="mnemonic-hint" role="status" hidden></div><label class="hint-control"><input type="checkbox" id="show-hint" ${run.hint?'checked':''}> 显示拆解提示</label><p class="exercise-hint" id="answer-hint" ${run.hint?'':'hidden'}>${esc(q.explain)}</p></div><div class="round-label"><span>本轮练习 <b id="round-range"></b></span><span class="queue-legend" aria-label="题目状态"><span><i class="legend-current" aria-hidden="true"></i>当前</span><span><i class="legend-done" aria-hidden="true"></i>已完成</span><span><i class="legend-error" aria-hidden="true"></i>曾出错</span></span></div><div class="practice-queue" id="practice-queue" aria-label="本轮练习题目">${queueMarkup()}</div><div id="error-recap" class="error-recap" ${run.errorLog.length?'':'hidden'}>${errorRecap()}</div><div class="exercise-actions"><button class="text-button" data-action="split-current" ${canSplitQuestion(q)?'':'hidden'}>拆解当前字</button><button class="text-button" data-action="reveal">查看当前答案</button><button class="text-button" data-action="restart">重新开始本轮</button></div><dialog id="practice-split" aria-label="当前汉字拆解"><form method="dialog"><button class="secondary">关闭拆解</button></form><div class="split-dialog-body"></div></dialog><p class="metric-note">准确率 = 正确字母按键 ÷ 全部字母按键；改正后保留错误记录。</p></section>`;}
+function exercise(){if(!run||!run.questions.length)return '<div class="panel empty"><h2>还没有错题</h2><p>答错的字根会自动记在这里，随时可以回来重练。</p><button class="primary" data-action="start-roots">开始字根练习</button></div>';if(run.finished)return results();const q=run.questions[run.index];return `<section class="panel exercise-panel continuous" id="exercise-panel"><div class="panel-heading"><h2>连续练习</h2><span id="question-counter" class="muted">${esc(q.type)} · ${run.index+1} / ${run.questions.length}</span></div><div class="live-stats"><div><small>已完成</small><strong><span id="stat-progress">${run.index}</span><em> / ${run.questions.length}</em></strong></div><div><small>按键准确率</small><strong id="stat-accuracy">—</strong></div><div><small>错键次数</small><strong id="stat-errors">${run.errors}</strong></div><div><small>练习用时</small><strong id="stat-time">00:00</strong></div></div><div class="exercise-progress" role="progressbar" aria-label="练习进度" aria-valuemin="0" aria-valuemax="${run.questions.length}" aria-valuenow="${run.index}"><i style="width:${run.index/run.questions.length*100}%"></i></div>${run.lessonId!==null&&LESSONS[run.lessonId]?.rootKeys?'<p class="lesson-root-coverage">本课 '+LESSONS[run.lessonId].questions.length+' 个形体（含变体）全部入题：先逐个练一遍，再重复巩固至 60 题。</p>':''}${run.phrasePool?'<p class="phrase-pool-note">词组题库 '+PHRASES.length+' 条 · 本轮 '+run.questions.length+' 个不同词组 · 二字、三字、四字和长词</p>':''}<p class="instruction">按对立即前进 · 多字母编码输完自动换字 · 不用回车或空格</p>${run.rootMode?'<div id="root-run-progress">'+rootProgress()+'</div>':''}${articlePassage()}<div class="typing-stage"><div class="stage-heading"><div class="stage-label">当前题目</div><button class="stroke-replay" data-action="stroke-replay" title="特殊部件按字形逐笔演示" ${(RootPractice.resolve(q)?.strokeDrawing&&!RootPractice.resolve(q)?.kaiOutline&&!RootPractice.resolve(q)?.preferOriginal)?'':'hidden'}>逐笔写一遍</button></div><div class="typing-target ${run.phrasePool?'phrase-target':''}"><div class="target-char ${RootPractice.resolve(q)?'root-target':q.char.length>2?'long':''}">${questionShape(q)}</div><div id="code-slots" class="code-slots" aria-label="当前编码进度">${codeSlots()}</div></div><form id="answer-form"><label class="sr-only" for="answer">练习输入区</label><input id="answer" class="code-input" type="text" inputmode="text" autocapitalize="off" autocomplete="off" spellcheck="false" placeholder="点击这里，直接按键" aria-describedby="feedback" aria-label="练习输入区"></form><div id="feedback" class="feedback" role="status" aria-live="polite">${esc(run.message)}</div><div id="mnemonic-hint" class="mnemonic-hint" role="status" hidden></div><label class="hint-control"><input type="checkbox" id="show-hint" ${run.hint?'checked':''}> 显示拆解提示</label><p class="exercise-hint" id="answer-hint" ${run.hint?'':'hidden'}>${esc(q.explain)}</p></div><div class="round-label"><span>本轮练习 <b id="round-range"></b></span><span class="queue-legend" aria-label="题目状态"><span><i class="legend-current" aria-hidden="true"></i>当前</span><span><i class="legend-done" aria-hidden="true"></i>已完成</span><span><i class="legend-error" aria-hidden="true"></i>曾出错</span></span></div><div class="practice-queue ${run.phrasePool?'phrase-queue':''}" id="practice-queue" aria-label="本轮练习题目">${queueMarkup()}</div><div id="error-recap" class="error-recap" ${run.errorLog.length?'':'hidden'}>${errorRecap()}</div><div class="exercise-actions"><button class="text-button" data-action="split-current" ${canSplitQuestion(q)?'':'hidden'}>拆解当前字</button><button class="text-button" data-action="reveal">查看当前答案</button><button class="text-button" data-action="restart">重新开始本轮</button></div><dialog id="practice-split" aria-label="当前汉字拆解"><form method="dialog"><button class="secondary">关闭拆解</button></form><div class="split-dialog-body"></div></dialog><p class="metric-note">准确率 = 正确字母按键 ÷ 全部字母按键；改正后保留错误记录。</p></section>`;}
 function results(){const accuracy=PracticeEngine.accuracy(run)||0;return `<section class="panel result-panel" id="exercise-panel"><span class="result-icon">✓</span><div class="eyebrow">本轮练习完成</div><h2>${accuracy>=90?'这一轮，越来越顺手了。':'把错过的字，再练熟一点。'}</h2><div class="result-stats"><div><b>${run.questions.length}</b><span>完成题目</span></div><div><b>${accuracy}%</b><span>按键准确率</span></div><div><b>${run.errors}</b><span>错键次数</span></div><div><b>${elapsed()}</b><span>练习用时</span></div></div><p>共 ${run.attempts} 次字母按键，${run.correctKeys} 次正确；${run.errorIds.size} 个不同题目出现过错误。</p>${run.rootMode?rootProgress():''}${run.errorLog.length?'<div class="error-recap">'+errorRecap()+'</div>':''}${run.assistedIds.size?'<p>本轮查看过 '+run.assistedIds.size+' 题答案，这些题仍保留在错题本。</p>':''}<div class="button-row">${run.lessonId!==null&&run.lessonId<LESSONS.length-1?'<button class="primary" data-action="next-lesson">继续下一课</button>':''}<button class="secondary" data-action="restart">再练一轮</button>${saved.mistakes.length?'<button class="secondary" data-action="review">复习错题</button>':''}</div></section>`;}
 function classroom(){
  const l=LESSONS[lesson];if(l.kind==='article')return articleClassroom();
  const reading=l.kind==='reading';
- return `<div class="page-heading"><div><div class="eyebrow">${l.stage}</div><h1>${l.title.split(' · ')[0]}</h1><p>${reading?'认识五笔的基本思路与键盘分区，读完后进入横区字根课。':l.rootKeys?'本课覆盖 '+l.questions.length+' 个字根形体（含变体），共 60 次练习。':'先读懂规则，再用 60 次连续练习记住它。'}</p></div><span class="chapter-chip">第 ${number(lesson)} 课 / 共 ${LESSONS.length} 课</span></div>
+ return `<div class="page-heading"><div><div class="eyebrow">${l.stage}</div><h1>${l.title.split(' · ')[0]}</h1><p>${reading?'认识五笔的基本思路与键盘分区，读完后进入横区字根课。':l.rootKeys?'本课覆盖 '+l.questions.length+' 个字根形体（含变体），共 60 次练习。':l.questions===PHRASES?'词组题库 '+PHRASES.length+' 条，每轮随机抽取 60 个不同词组。':'先读懂规则，再用 60 次连续练习记住它。'}</p></div><span class="chapter-chip">第 ${number(lesson)} 课 / 共 ${LESSONS.length} 课</span></div>
  <label class="mobile-course">选择课程<select id="mobile-course">${LESSONS.map((l,i)=>`<option value="${i}" ${i===lesson?'selected':''}>${number(i)} ${l.title}</option>`).join('')}</select></label>
  ${reading?'':`<div class="lesson-tabs" role="group" aria-label="本课内容"><button data-action="lesson-learn" aria-pressed="${lessonPane==='learn'}">① 学习讲解</button><button data-action="lesson-practice" aria-pressed="${lessonPane==='practice'}">② 连续练习 · 60 题</button></div>`}
  <div class="lesson-layout"><div><section class="panel lesson-panel" id="lesson-copy" ${reading||lessonPane==='learn'?'':'hidden'}><div class="panel-heading"><span class="lesson-tag">第 ${number(lesson)} 课</span><span class="muted">${reading?'入门导读':lessonComplete(lesson)?'已完成 · 随时复习':'一步一步学'}</span></div><h2>${l.heading}</h2><p>${l.intro}</p>${l.rootKeys?zoneRootCards(l.rootKeys):''}${l.body}
@@ -17930,10 +18098,10 @@ function classroom(){
 }
 function reference(){return `<div class="page-heading"><div><div class="eyebrow">字形、键位、口诀，一起记</div><h1>字根速查</h1><button class="text-button" data-view="lookup">输入汉字查拆解</button><p>新世纪版完整字根图，配合五区彩色键盘。</p></div><span class="chapter-chip">五区 · 二十五键</span></div><section class="panel chart-panel"><div class="panel-heading"><h2>第三代五笔 · 新世纪版字根图</h2><button class="secondary" data-action="chart-open">放大查看</button></div><button class="chart-thumb" data-action="chart-open" aria-label="放大新世纪五笔字根图"><img src="${RootCatalog.source.path}" width="3508" height="2480" alt="新世纪五笔完整简体字根键位图，含红绿蓝紫黄五区和二十五句助记歌"></button><p class="chart-caption">你提供的学习图 · 字根图及助记歌版权归王码公司，原图署名与声明保留。</p></section><dialog id="root-chart" aria-labelledby="chart-title"><div class="chart-dialog-head"><h2 id="chart-title">新世纪五笔字根图</h2><form method="dialog"><button class="secondary" aria-label="关闭字根图">关闭 ×</button></form></div><p class="muted">图片可横向滚动查看；按 Esc 关闭。</p><div class="chart-scroll"><img src="${RootCatalog.source.path}" width="3508" height="2480" alt="新世纪五笔完整字根图与助记歌放大图"></div></dialog>${keyboard()}<div class="note reference-note">下面列出全部 227 个字根形体（含变体）与 25 句助记歌，字形与练习一致。点键位卡片，可在上方键盘查看这一键。</div>${ZONES.map((z,i)=>`<section class="reference-zone" data-zone="${i}"><h2><span>${z.stroke}</span> ${z.name}<small>${z.keys.split('').join(' · ')}</small></h2><div class="reference-grid complete-reference-grid">${[...z.keys].map(k=>`<button class="root-card complete-root-card" data-key="${k}" aria-label="${k} 键，共 ${keyRootRecords(k).length} 个字根形体"><div class="root-card-heading"><kbd>${k}</kbd><strong>${keyNameGlyph(k)}</strong></div><span class="root-shape-count">${keyRootRecords(k).length} 个形体 · 含变体</span><div class="root-glyph-list">${keyRootItems(k)}</div><b class="card-mnemonic">${MNEMONICS[k]}</b><small>${ROOTS[k].extra}</small><span>一级简码：${ROOTS[k].short}</span></button>`).join('')}</div></section>`).join('')}<section class="panel"><h2>末笔字型识别码</h2>${idTable}<button class="secondary" data-lesson="9">去学识别码的完整讲解 →</button></section>`;}
 const modes=[['roots','随机快练'],['coverage','全覆盖 · 含变体'],['unseen','未练优先'],['short','一级简码'],['words','单字全码'],['phrases','词组取码'],['idioms','成语取码'],['review','错题重练']];
-function practice(){return `<div class="page-heading"><div><div class="eyebrow">用练习，形成记忆</div><h1>专项练习</h1><p>选择一项，专心练一小组。</p></div><span class="chapter-chip">待复习 ${saved.mistakes.length} 题</span></div><section class="panel practice-options"><div class="mode-tabs" role="group" aria-label="练习类型">${modes.map(([id,label])=>`<button class="mode ${practiceMode===id?'active':''}" data-mode="${id}" aria-pressed="${practiceMode===id}">${label}</button>`).join('')}</div>${isRootMode()?`<label class="zone-picker">练习范围<select id="zone-select"><option value="all" ${rootZone==='all'||rootZone===null?'selected':''}>全部五区</option>${ZONES.map((z,i)=>`<option value="${i}" ${String(i)===rootZone?'selected':''}>${z.name} · ${z.keys}</option>`).join('')}</select></label>`:''}<p class="muted">${practiceMode==='coverage'?'本轮遍历当前范围内全部已核验形体，每个形体一次；中途离开可继续。':practiceMode==='unseen'?'每轮最多 60 个不同形体，未答完的形体优先；不足 60 个时用已练形体补足。':practiceMode==='review'?'本轮无错键且未查看答案的题目，会从错题本中移除。':practiceMode==='words'?'本模式练习单字全码。请勿使用一级简码代替。':practiceMode==='phrases'?'按全码推导词组编码；实际输入还需输入法词库支持。':'每轮 60 次练习，从当前范围的完整形体题库随机出题；范围不足 60 个时，先逐个练一遍，再重复巩固。'}</p>${isRootMode()?pendingRoots():''}</section><div class="practice-layout"><div id="exercise-host">${exercise()}</div><aside class="panel session-panel">${sessionPanel()}</aside></div>${keyboard()}`;}
+function practice(){return `<div class="page-heading"><div><div class="eyebrow">用练习，形成记忆</div><h1>专项练习</h1><p>选择一项，专心练一小组。</p></div><span class="chapter-chip">待复习 ${saved.mistakes.length} 题</span></div><section class="panel practice-options"><div class="mode-tabs" role="group" aria-label="练习类型">${modes.map(([id,label])=>`<button class="mode ${practiceMode===id?'active':''}" data-mode="${id}" aria-pressed="${practiceMode===id}">${label}</button>`).join('')}</div>${isRootMode()?`<label class="zone-picker">练习范围<select id="zone-select"><option value="all" ${rootZone==='all'||rootZone===null?'selected':''}>全部五区</option>${ZONES.map((z,i)=>`<option value="${i}" ${String(i)===rootZone?'selected':''}>${z.name} · ${z.keys}</option>`).join('')}</select></label>`:''}<p class="muted">${practiceMode==='coverage'?'本轮遍历当前范围内全部已核验形体，每个形体一次；中途离开可继续。':practiceMode==='unseen'?'每轮最多 60 个不同形体，未答完的形体优先；不足 60 个时用已练形体补足。':practiceMode==='review'?'本轮无错键且未查看答案的题目，会从错题本中移除。':practiceMode==='words'?'本模式练习单字全码。请勿使用一级简码代替。':practiceMode==='phrases'?'共 '+PHRASES.length+' 条常用词组，每轮随机抽取 60 个不同词组；重新开始会从完整题库重新抽题。按单字全码取码，实际输入仍需词库支持。':'每轮 60 次练习，从当前范围的完整形体题库随机出题；范围不足 60 个时，先逐个练一遍，再重复巩固。'}</p>${isRootMode()?pendingRoots():''}</section><div class="practice-layout"><div id="exercise-host">${exercise()}</div><aside class="panel session-panel">${sessionPanel()}</aside></div>${keyboard()}`;}
 function render(){document.querySelector('#app').innerHTML=RootPractice.definitions()+nav()+`<main><header class="topbar"><span>我的学习空间 <span class="top-separator">/</span> ${view==='classroom'?'学习课堂':view==='reference'?'字根速查':view==='lookup'?'拆字查询':'专项练习'}</span><span class="personal">新世纪五笔 ${accountLink()}</span></header><section class="workspace"><div id="cloud-status">${syncPanel()}</div>${view==='classroom'?classroom():view==='reference'?reference():view==='lookup'?lookupMarkup():practice()}${footer()}</section></main>`;bind();bindExtensions();bindSyncPanel();updateStats();}
 function bind(){document.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>navigate(b.dataset.view));document.querySelector('.brand').onclick=e=>{e.preventDefault();navigate('classroom');};document.querySelectorAll('[data-lesson]').forEach(b=>b.onclick=()=>openLesson(Number(b.dataset.lesson)));document.querySelectorAll('[data-key]').forEach(b=>b.onclick=()=>selectKey(b.dataset.key));document.querySelectorAll('[data-mode]').forEach(b=>b.onclick=()=>startPractice(b.dataset.mode));const select=$('#mobile-course');if(select)select.onchange=e=>openLesson(Number(e.target.value));const zone=$('#zone-select');if(zone)zone.onchange=e=>{captureRootRun();rootZone=e.target.value;startPractice(practiceMode);};bindExercise();bindActions();}
-function bindActions(){document.querySelectorAll('[data-action]').forEach(b=>b.onclick=()=>{const a=b.dataset.action;if(a==='lesson-learn'||a==='lesson-practice'){lessonPane=a==='lesson-learn'?'learn':'practice';$('#lesson-copy').hidden=lessonPane!=='learn';$('#exercise-host').hidden=lessonPane!=='practice';document.querySelectorAll('.lesson-tabs button').forEach(t=>t.setAttribute('aria-pressed',String(t.dataset.action===a)));$('.lesson-tabs').scrollIntoView({block:'start',behavior:'instant'});if(lessonPane==='practice')focusAnswer();}if(a==='stroke-replay'&&run&&!run.finished){const q=run.questions[run.index];if((RootPractice.resolve(q)?.strokeDrawing&&!RootPractice.resolve(q)?.kaiOutline&&!RootPractice.resolve(q)?.preferOriginal)){$('.target-char').innerHTML=questionShape(q,{animate:true});focusAnswer();}return;}if(a==='split-current')showCurrentSplit();if(a==='chart-open')$('#root-chart').showModal();if(a==='restart'&&run?.rootMode){startPractice(run.rootMode,true);return;}if(a==='restart'&&run?.lessonId!=null&&LESSONS[run.lessonId]?.rootKeys){beginLesson(run.lessonId);refreshExercise();focusAnswer();return;}if(a==='restart'&&run){const pool=run.review?saved.mistakes:run.questions;const previous=run;begin(pool,previous.title,previous.lessonId,previous.review,previous.ordered);run.articleId=previous.articleId;refreshExercise();focusAnswer();}if(a==='reveal'&&run&&!run.finished){const q=run.questions[run.index];run.assistedIds.add(PracticeEngine.id(q));captureRootRun();addMistake(q);run.message='答案：'+q.code+'。'+q.explain;run.messageType='reveal';paintExercise();focusAnswer();}if(a==='review')startPractice('review');if(a==='start-roots')startPractice('roots');if(a==='next-lesson'&&lesson<LESSONS.length-1)openLesson(lesson+1);if(a==='prev-lesson'&&lesson>0)openLesson(lesson-1);});}
+function bindActions(){document.querySelectorAll('[data-action]').forEach(b=>b.onclick=()=>{const a=b.dataset.action;if(a==='lesson-learn'||a==='lesson-practice'){lessonPane=a==='lesson-learn'?'learn':'practice';$('#lesson-copy').hidden=lessonPane!=='learn';$('#exercise-host').hidden=lessonPane!=='practice';document.querySelectorAll('.lesson-tabs button').forEach(t=>t.setAttribute('aria-pressed',String(t.dataset.action===a)));$('.lesson-tabs').scrollIntoView({block:'start',behavior:'instant'});if(lessonPane==='practice')focusAnswer();}if(a==='stroke-replay'&&run&&!run.finished){const q=run.questions[run.index];if((RootPractice.resolve(q)?.strokeDrawing&&!RootPractice.resolve(q)?.kaiOutline&&!RootPractice.resolve(q)?.preferOriginal)){$('.target-char').innerHTML=questionShape(q,{animate:true});focusAnswer();}return;}if(a==='split-current')showCurrentSplit();if(a==='chart-open')$('#root-chart').showModal();if(a==='restart'&&run?.rootMode){startPractice(run.rootMode,true);return;}if(a==='restart'&&run?.lessonId!=null&&LESSONS[run.lessonId]?.rootKeys){beginLesson(run.lessonId);refreshExercise();focusAnswer();return;}if(a==='restart'&&run){const pool=run.review?saved.mistakes:run.phrasePool?PHRASES:run.questions;const previous=run;begin(pool,previous.title,previous.lessonId,previous.review,previous.ordered);run.articleId=previous.articleId;refreshExercise();focusAnswer();}if(a==='reveal'&&run&&!run.finished){const q=run.questions[run.index];run.assistedIds.add(PracticeEngine.id(q));captureRootRun();addMistake(q);run.message='答案：'+q.code+'。'+q.explain;run.messageType='reveal';paintExercise();focusAnswer();}if(a==='review')startPractice('review');if(a==='start-roots')startPractice('roots');if(a==='next-lesson'&&lesson<LESSONS.length-1)openLesson(lesson+1);if(a==='prev-lesson'&&lesson>0)openLesson(lesson-1);});}
 function bindExercise(){const form=$('#answer-form'),input=$('#answer');if(!form)return;const splitDialog=$('#practice-split');if(splitDialog)splitDialog.onclose=()=>focusAnswer();form.onsubmit=e=>e.preventDefault();input.onkeydown=e=>{if(e.ctrlKey||e.metaKey||e.altKey||e.isComposing||run.composing)return;if(e.key==='Tab'||e.key==='Escape'||e.key.startsWith('Arrow'))return;if(e.key===' '||e.key==='Enter'){e.preventDefault();return;}if(/^[a-zA-Z]$/.test(e.key)||e.key==='Backspace'){e.preventDefault();handlePracticeKey(e.key,{repeat:e.repeat});}};input.oncompositionstart=()=>{run.composing=true;};input.oncompositionend=()=>{run.composing=false;input.value=run.questions[run.index]?.code.slice(0,run.position)||'';run.message='请切换到英文输入；中文输入不会计错。';run.messageType='';paintExercise();};input.onbeforeinput=e=>{if(e.isComposing||run.composing)return;if(e.inputType==='insertText'&&e.data&&/^[a-zA-Z]$/.test(e.data)){e.preventDefault();handlePracticeKey(e.data);}else if(e.inputType==='deleteContentBackward'){e.preventDefault();handlePracticeKey('Backspace');}else if(e.inputType.startsWith('insert')){e.preventDefault();run.message='请逐个按英文字母，粘贴和中文不会计入练习。';run.messageType='';paintExercise();}};input.oninput=e=>{if(!e.isComposing&&!run.composing)input.value=run.questions[run.index]?.code.slice(0,run.position)||'';};input.onpaste=e=>{e.preventDefault();run.message='请逐个按键，粘贴不会计入练习。';run.messageType='';paintExercise();};input.onfocus=()=>form.classList.add('focused');input.onblur=()=>form.classList.remove('focused');$('#show-hint').onchange=e=>{run.hint=e.target.checked;saved.hints=run.hint;save();captureRootRun();paintExercise();};paintExercise();}
 function selectKey(key){if(!ROOTS[key])return;selectedKey=key;document.querySelectorAll('.key[data-key]').forEach(b=>{const active=b.dataset.key===key;b.classList.toggle('active',active);b.setAttribute('aria-pressed',String(active));});$('#key-detail').innerHTML=keyDetail();}
 function openLesson(id){if(!Number.isInteger(id)||!LESSONS[id])return;captureRootRun();view='classroom';lessonPane='learn';lesson=id;saved.lesson=id;save();beginLesson(id);render();window.scrollTo({top:0,behavior:'instant'});focusAnswer();}
